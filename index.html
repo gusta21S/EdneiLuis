@@ -361,13 +361,39 @@
 
         @media (max-width: 600px) {
             .hero h1 { 
-                font-size: clamp(2rem, 11vw, 3.5rem); 
+                font-size: clamp(1.8rem, 10vw, 2.8rem); 
+                line-height: 1.1;
                 letter-spacing: -1px;
             }
-            .hero p {
-                font-size: 1.1rem;
+            .hero h1 span {
+                margin-top: 8px;
             }
-            .section-header h2 { font-size: 2.2rem; }
+            .hero p {
+                font-size: 1rem;
+                padding: 0 10px;
+            }
+            .section-header h2 { font-size: 2rem; }
+            .section-container {
+                padding: 60px 15px;
+            }
+            .bento-item {
+                padding: 25px;
+            }
+            .bento-item i {
+                top: 20px;
+                right: 20px;
+                width: 32px;
+                height: 32px;
+            }
+            .plan-price { font-size: 3rem; }
+            .whatsapp-float {
+                bottom: 20px;
+                right: 20px;
+            }
+            .wa-btn {
+                width: 55px;
+                height: 55px;
+            }
         }
     </style>
 </head>
@@ -403,7 +429,7 @@
                 <img src="foto_perfil_autoridade.jpg" alt="Edinei Luís" id="parallax-img" onerror="this.src='https://via.placeholder.com/1200x1500/111/fff?text=Edinei+Luis'">
             </div>
             <div class="bio-content reveal">
-                <h2 style="font-size: 3.5rem; margin-bottom: 20px;">O Treinador</h2>
+                <h2 style="font-size: clamp(2.2rem, 10vw, 3.5rem); line-height: 1.1; margin-bottom: 20px;">O Treinador</h2>
                 <p style="color: var(--text-muted); font-size: 1.2rem; margin-bottom: 30px;">
                     Com passagens pela <strong>Impacto Academia</strong> e <strong>Four Fit</strong>, Edinei Luís não entrega apenas treinos, entrega resultados mensuráveis através de um acompanhamento técnico cirúrgico.
                 </p>
