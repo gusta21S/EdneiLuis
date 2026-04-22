@@ -78,6 +78,15 @@
             to { transform: translate(100px, 100px) scale(1.2); }
         }
 
+        /* --- GRADIENT FADE MASKS (O segredo para não parecer um quadrado) --- */
+        .blend-media {
+            /* Cria um gradiente que dissolve o topo e a base da imagem/vídeo no fundo preto */
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+            mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+            border-radius: 24px;
+            overflow: hidden;
+        }
+
         /* --- GLASSMORPHISM COMPONENTS --- */
         .glass-card {
             background: var(--glass);
@@ -132,7 +141,6 @@
             text-align: center;
             position: relative;
             padding: 0 20px;
-            /* Adicionando a foto de fundo de volta com um gradiente escuro para mesclar com o site */
             background: linear-gradient(to bottom, rgba(5,5,5,0.4) 0%, rgba(5,5,5,1) 100%), url('foto_hero_principal.jpg');
             background-size: cover;
             background-position: center;
@@ -182,7 +190,7 @@
             box-shadow: 0 0 50px rgba(255, 0, 0, 0.5);
         }
 
-        /* --- BENTO GRID SECTION --- */
+        /* --- SECTIONS BÁSICAS --- */
         .section-container {
             max-width: 1200px;
             margin: 0 auto;
@@ -199,6 +207,48 @@
             margin-bottom: 15px;
         }
 
+        /* --- BIO SECTION --- */
+        .bio-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .bio-image-wrapper {
+            position: relative;
+            aspect-ratio: 4/5;
+        }
+
+        .bio-image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scale(1.15); /* Margem extra para o efeito parallax rolar sem mostrar o fundo */
+        }
+
+        /* --- VIDEO SECTION (NOVO) --- */
+        .video-section {
+            padding: 40px 20px 100px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16/9; /* Proporção exata 1920x1080 solicitada */
+            background: var(--glass);
+        }
+
+        .video-wrapper video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scale(1.1); /* Margem extra para o parallax de vídeo */
+        }
+
+        /* --- BENTO GRID SECTION --- */
         .bento-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -226,31 +276,8 @@
         .bento-item h3 { font-size: 1.5rem; margin-bottom: 10px; }
         .bento-item p { color: var(--text-muted); font-size: 0.9rem; }
 
-        /* Bento Spans */
         .item-lg { grid-column: span 2; grid-row: span 2; }
         .item-md { grid-column: span 2; }
-
-        /* --- BIO PARALLAX --- */
-        .bio-section {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 80px;
-            align-items: center;
-        }
-
-        .bio-image-wrapper {
-            position: relative;
-            border-radius: 30px;
-            overflow: hidden;
-            aspect-ratio: 4/5;
-        }
-
-        .bio-image-wrapper img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transform: scale(1.1);
-        }
 
         /* --- PLANS & ANIMATED BORDER --- */
         .plans-wrapper {
@@ -272,7 +299,6 @@
             overflow: hidden;
         }
 
-        /* Border Beam Effect */
         .plan-card.featured::before {
             content: '';
             position: absolute;
@@ -376,6 +402,9 @@
             .section-container {
                 padding: 60px 15px;
             }
+            .video-section {
+                padding: 20px 15px 60px;
+            }
             .bento-item {
                 padding: 25px;
             }
@@ -419,7 +448,7 @@
     </nav>
 
     <!-- Hero Section -->
-    <section class="hero">
+    <section class="hero parallax-element" data-speed="0.2">
         <div class="hero-content">
             <h1 id="hero-title">CONQUISTE <br><span>PERFORMANCE</span></h1>
             <p id="hero-subtitle">Treinamento de elite baseado em ciência para quem busca o extraordinário.</p>
@@ -430,8 +459,9 @@
     <!-- Bio Section -->
     <section class="section-container">
         <div class="bio-section">
-            <div class="bio-image-wrapper glass-card reveal">
-                <img src="foto_perfil_autoridade.jpg" alt="Edinei Luís" id="parallax-img" onerror="this.src='https://via.placeholder.com/1200x1500/111/fff?text=Edinei+Luis'">
+            <div class="bio-image-wrapper blend-media reveal">
+                <!-- Imagem com parallax interno -->
+                <img src="foto_perfil_autoridade.jpg" alt="Edinei Luís" class="inner-parallax" onerror="this.src='https://via.placeholder.com/1200x1500/111/fff?text=Edinei+Luis'">
             </div>
             <div class="bio-content reveal">
                 <h2 style="font-size: clamp(2.2rem, 10vw, 3.5rem); line-height: 1.1; margin-bottom: 20px;">O Treinador</h2>
@@ -439,16 +469,30 @@
                     Com passagens pela <strong>Impacto Academia</strong> e <strong>Four Fit</strong>, Edinei Luís não entrega apenas treinos, entrega resultados mensuráveis através de um acompanhamento técnico cirúrgico.
                 </p>
                 <div style="display: grid; gap: 15px;">
-                    <div class="glass-card" style="padding: 20px; display: flex; align-items: center; gap: 15px;">
+                    <div class="glass-card parallax-element" data-speed="0.1" style="padding: 20px; display: flex; align-items: center; gap: 15px;">
                         <i data-lucide="shield-check" style="color: var(--accent-red)"></i>
                         <span>Especialista em Mobilidade & Força</span>
                     </div>
-                    <div class="glass-card" style="padding: 20px; display: flex; align-items: center; gap: 15px;">
+                    <div class="glass-card parallax-element" data-speed="0.2" style="padding: 20px; display: flex; align-items: center; gap: 15px;">
                         <i data-lucide="award" style="color: var(--accent-red)"></i>
                         <span>Certificação Personal 2.0</span>
                     </div>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <!-- Video Section (Nova) -->
+    <section class="video-section reveal">
+        <div class="section-header">
+            <h2 style="font-size: 2.5rem; margin-bottom: 5px;">Performance <span>Em Ação</span></h2>
+        </div>
+        <div class="video-wrapper blend-media">
+            <!-- Vídeo em 16:9 com Parallax Interno e Gradiente -->
+            <video class="inner-parallax" autoplay loop muted playsinline>
+                <!-- Altere o nome do arquivo aqui para o nome exato do seu vídeo .mp4 -->
+                <source src="video_treino.mp4" type="video/mp4">
+            </video>
         </div>
     </section>
 
@@ -460,22 +504,22 @@
         </div>
         
         <div class="bento-grid">
-            <div class="glass-card bento-item item-lg reveal">
+            <div class="glass-card bento-item item-lg parallax-element reveal" data-speed="0.15">
                 <i data-lucide="dumbbell" size="48"></i>
                 <h3>Musculação</h3>
                 <p>A base científica para hipertrofia muscular e densidade física. Foco em biomecânica aplicada.</p>
             </div>
-            <div class="glass-card bento-item reveal">
+            <div class="glass-card bento-item parallax-element reveal" data-speed="0.3">
                 <i data-lucide="zap"></i>
                 <h3>Cross Training</h3>
                 <p>Intensidade máxima para explosão.</p>
             </div>
-            <div class="glass-card bento-item reveal">
+            <div class="glass-card bento-item parallax-element reveal" data-speed="0.2">
                 <i data-lucide="activity"></i>
                 <h3>Hyrox</h3>
                 <p>Resistência de alta performance.</p>
             </div>
-            <div class="glass-card bento-item item-md reveal">
+            <div class="glass-card bento-item item-md parallax-element reveal" data-speed="0.1">
                 <i data-lucide="move"></i>
                 <h3>Agachar. Empurrar. Puxar.</h3>
                 <p>Treinamos o corpo para as funções reais, garantindo mobilidade para a vida toda.</p>
@@ -503,7 +547,7 @@
             </div>
 
             <!-- Anual (Featured) -->
-            <div class="glass-card plan-card featured reveal">
+            <div class="glass-card plan-card featured reveal parallax-element" data-speed="0.1">
                 <h3>Anual VIP</h3>
                 <div class="plan-price">R$ 117<span>/mês</span></div>
                 <p style="color: var(--text-muted); margin-top: -15px; margin-bottom: 5px;">Para 3x na semana</p>
@@ -566,15 +610,11 @@
         // Hero Animation
         const tl = gsap.timeline();
         tl.from(".nav-content", { y: -50, opacity: 0, duration: 1, ease: "power4.out" })
-          .from("#hero-title", { 
-              duration: 1.5, 
-              text: "", 
-              ease: "none" 
-          })
+          .from("#hero-title", { duration: 1.5, text: "", ease: "none" })
           .from("#hero-subtitle", { opacity: 0, y: 20, duration: 1 }, "-=0.5")
           .from("#hero-cta", { opacity: 0, scale: 0.8, duration: 1, ease: "elastic.out(1, 0.5)" }, "-=0.8");
 
-        // Scroll Reveals
+        // Reveal animations (Fade in & up)
         gsap.utils.toArray('.reveal').forEach(el => {
             gsap.from(el, {
                 scrollTrigger: {
@@ -589,16 +629,44 @@
             });
         });
 
-        // Parallax Effect
-        gsap.to("#parallax-img", {
-            scrollTrigger: {
-                trigger: ".bio-section",
-                start: "top bottom",
-                end: "bottom top",
-                scrub: true
-            },
-            y: -80,
-            ease: "none"
+        // PARALLAX GLOBAL (Para Background e Elementos)
+        // 1. Move os blocos de luzes do fundo
+        gsap.to(".blob-1", {
+            y: -250,
+            scrollTrigger: { scrub: 1 }
+        });
+        gsap.to(".blob-2", {
+            y: -350,
+            scrollTrigger: { scrub: 1 }
+        });
+
+        // 2. Parallax em Imagens/Vídeos (efeito de janela)
+        gsap.utils.toArray('.inner-parallax').forEach(el => {
+            gsap.to(el, {
+                y: -60,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: el.parentElement,
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: true
+                }
+            });
+        });
+
+        // 3. Parallax em elementos aleatórios da tela (Cards, Textos)
+        gsap.utils.toArray('.parallax-element').forEach(el => {
+            const speed = el.getAttribute('data-speed') || 0.2;
+            gsap.to(el, {
+                y: () => -100 * speed,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: el,
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: true
+                }
+            });
         });
 
         // Navbar Scroll
